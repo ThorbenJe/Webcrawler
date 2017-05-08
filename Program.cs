@@ -32,7 +32,7 @@ namespace Webcrawler
                         }
                         else
                         {
-                            Gui.WriteFontRed("ERROR No reponse from site.");
+                            Gui.WriteFontRed("ERROR");
                         }
                     }
                 }
