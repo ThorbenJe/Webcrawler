@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -14,14 +14,18 @@ namespace Webcrawler
         public static void JsonWriteLine(string path, List<string> list)
         {
             path = path + "UrlList_" + DateTime.Now.ToString("yyyy.MM.dd_HH.mm") + ".json";
-            //Gui.WriteLine(path);
             File.WriteAllLines(path, list);
         }
         public static void WriteOneLine(string path, string text)
         {
-            //path = path + "UrlList_" + DateTime.Now.ToString("yyyy.MM.dd_HH.mm") + ".json";
             path = path + "UrlList.json";
             File.AppendAllText(path, text + Environment.NewLine);
+        }
+        public static string CreatFile(string path)
+        {
+            path = path + "UrlList_" + DateTime.Now.ToString("yyyy.MM.dd_HH.mm") + ".json";
+            File.Create(path);
+            return path;
         }
     }
 }
