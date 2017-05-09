@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -9,7 +8,7 @@ namespace Webcrawler
 {
     class Crawler
     {
-        public static string GetWebCode(string url, string startUrl)
+        public static string GetWebCode(string url, string startUrl, string domain)
         {
             if (url.Contains(startUrl))
             {
@@ -23,6 +22,7 @@ namespace Webcrawler
                         {
                             if (response.StatusCode == HttpStatusCode.OK)
                             {
+                                //Console.WriteLine("The connection is: " + response.StatusDescription);
                                 Stream dataStream = response.GetResponseStream();
                                 StreamReader reader = new StreamReader(dataStream);
                                 string responseFromServer = reader.ReadToEnd();
@@ -39,7 +39,7 @@ namespace Webcrawler
             }
             return "";
         }
-        public static List<string> GetUrlList(string responseFromServer, string startUrl, List<string> urlList, string path)
+        public static List<string> GetUrlList(string responseFromServer, string startUrl, List<string> urlList, string path, string httpHttps)
         {
             string linkedUrl;
             
@@ -50,7 +50,7 @@ namespace Webcrawler
             {
                 if (!urlList.Contains(match.ToString()))
                 {
-                    linkedUrl = GetLinkedUrl(match.ToString(), startUrl);
+                    linkedUrl = GetLinkedUrl(match.ToString(), startUrl, httpHttps);
                     if (!urlList.Contains(linkedUrl))
                     {
                         urlList.Add(linkedUrl);
@@ -61,17 +61,35 @@ namespace Webcrawler
             return urlList;
         }
 
-        public static string GetLinkedUrl(string url, string startUrl)
+        public static string GetLinkedUrl(string url, string startUrl, string httpHttps)
         {
             if (!url.Contains("http://") && !url.Contains("https://"))
             {
                 if (url.IndexOf("/", 0) != -1)
                 {
-                    url = startUrl + url;
+                    //url = startUrl + url;
+                    Uri myUri = new Uri(startUrl);
+                    string host = myUri.Host;
+                    if (httpHttps == "s")
+                    {
+                        url = "https://" + host + url;
+                    }
+                    else
+                    {
+                        url = "http://" + host + url;
+                    }
                 }
                 else
                 {
-                    url = startUrl + "/" + url;
+                    //url = startUrl + "/" + url;
+                    Uri myUri = new Uri(startUrl);
+                    string host = myUri.Host;
+                    if (httpHttps == "s") {
+                        url = "https://" + host + "/" + url;
+                    }else
+                    {
+                        url = "http://" + host + "/" + url;
+                    }
                 }
             }
             return url;
