@@ -11,9 +11,14 @@ namespace Webcrawler
             Gui.Write("Please enter a full url: ");
             string url = Gui.UserRequest();
             string startUrl = url;
-            url = Crawler.GetLinkedUrl(url, startUrl);
+            string httpHttps = url.Substring(4, 1);
+            //path = IoFile.CreatFile(path);
+            url = Crawler.GetLinkedUrl(url, startUrl, httpHttps);
             List<string> urlList = new List<string>() {url};
             int counter = 0;
+
+            Uri myUri = new Uri(startUrl);
+            string domain = myUri.Host;
 
             try
             {
@@ -21,11 +26,16 @@ namespace Webcrawler
                 {
                     url = urlList[counter];
                     counter++;
+                    Gui.WriteLine(startUrl);
+                    Gui.WriteLine(url);
+                    Console.WriteLine("We are at Link Nr. " +counter);
+                    //System.Threading.Thread.Sleep(300);
 
-                    string responseFromServer = Crawler.GetWebCode(url, startUrl);
+                    string responseFromServer = Crawler.GetWebCode(url, startUrl, domain);
                     if (responseFromServer != "")
                     {
-                        urlList = Crawler.GetUrlList(responseFromServer, startUrl, urlList, path);
+                        urlList = Crawler.GetUrlList(responseFromServer, startUrl, urlList, path, httpHttps);
+                        Console.WriteLine("Links exist " +urlList.Count);
                         Gui.WriteFontGreen("Link Checked");
                     }
                     else
