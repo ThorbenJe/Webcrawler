@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Webcrawler
@@ -19,21 +19,18 @@ namespace Webcrawler
             {
                 while (urlList[counter].Length > 4)
                 {
-                    if (urlList[counter].Length > 4)
-                    {
-                        url = urlList[counter];
-                        counter++;
-                        Gui.WriteLine(url);
+                    url = urlList[counter];
+                    counter++;
 
-                        string responseFromServer = Crawler.GetWebCode(url, startUrl);
-                        if (responseFromServer != "")
-                        {
-                            urlList = Crawler.GetUrlList(responseFromServer, startUrl, urlList, path);
-                        }
-                        else
-                        {
-                            Gui.WriteFontRed("ERROR");
-                        }
+                    string responseFromServer = Crawler.GetWebCode(url, startUrl);
+                    if (responseFromServer != "")
+                    {
+                        urlList = Crawler.GetUrlList(responseFromServer, startUrl, urlList, path);
+                        Gui.WriteFontGreen("Link Checked");
+                    }
+                    else
+                    {
+                        Gui.WriteFontRed("ERROR");
                     }
                 }
             }
