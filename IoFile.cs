@@ -21,11 +21,5 @@ namespace Webcrawler
             path = path + "UrlList.json";
             File.AppendAllText(path, text + Environment.NewLine);
         }
-        public static string CreatFile(string path)
-        {
-            path = path + "UrlList_" + DateTime.Now.ToString("yyyy.MM.dd_HH.mm") + ".json";
-            File.Create(path);
-            return path;
-        }
     }
 }
