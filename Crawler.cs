@@ -16,16 +16,15 @@ namespace Webcrawler
                 {
                     try
                     {
-                        WebRequest request = WebRequest.Create(url);
+                        var request = WebRequest.Create(url);
                         request.Credentials = CredentialCache.DefaultCredentials;
-                        using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                        using (var response = request.GetResponse() as HttpWebResponse)
                         {
                             if (response.StatusCode == HttpStatusCode.OK)
                             {
-                                //Console.WriteLine("The connection is: " + response.StatusDescription);
                                 Stream dataStream = response.GetResponseStream();
                                 StreamReader reader = new StreamReader(dataStream);
-                                string responseFromServer = reader.ReadToEnd();
+                                var responseFromServer = reader.ReadToEnd();
                                 reader.Close();
                                 dataStream.Close();
                                 response.Close();
@@ -33,18 +32,17 @@ namespace Webcrawler
                             }
                         }
                     }
-                    catch (WebException) {}
-                    catch (UriFormatException) {}
+                    catch (WebException e) { Gui.WriteRed(e.Message); }
+                    catch (UriFormatException e) { Gui.WriteRed(e.Message);  }
                 }
             }
             return "";
         }
+
         public static List<string> GetUrlList(string responseFromServer, string startUrl, List<string> urlList, string path, string httpHttps)
         {
             string linkedUrl;
-            
-
-            Regex regexLink = new Regex("(?<=<a\\s*?href=(?:'|\"))[^'\"]*?(?=(?:'|\"))");
+            var regexLink = new Regex("(?<=<a\\s*?href=(?:'|\"))[^'\"]*?(?=(?:'|\"))");
 
             foreach (var match in regexLink.Matches(responseFromServer))
             {
@@ -67,9 +65,8 @@ namespace Webcrawler
             {
                 if (url.IndexOf("/", 0) != -1)
                 {
-                    //url = startUrl + url;
-                    Uri myUri = new Uri(startUrl);
-                    string host = myUri.Host;
+                    var myUri = new Uri(startUrl);
+                    var host = myUri.Host;
                     if (httpHttps == "s")
                     {
                         url = "https://" + host + url;
@@ -81,9 +78,8 @@ namespace Webcrawler
                 }
                 else
                 {
-                    //url = startUrl + "/" + url;
-                    Uri myUri = new Uri(startUrl);
-                    string host = myUri.Host;
+                    var myUri = new Uri(startUrl);
+                    var host = myUri.Host;
                     if (httpHttps == "s") {
                         url = "https://" + host + "/" + url;
                     }else
