@@ -7,18 +7,17 @@ namespace Webcrawler
     {
         static void Main(string[] args)
         {
-            string path = @"C:\Users\T. Jezioro\Documents\Visual Studio 2015\Projects\Webcrawler\";
+            var path = @".\";
             Gui.Write("Please enter a full url: ");
-            string url = Gui.UserRequest();
-            string startUrl = url;
-            string httpHttps = url.Substring(4, 1);
-            //path = IoFile.CreatFile(path);
+            var url = Gui.UserRequest();
+            var startUrl = url;
+            var httpHttps = url.Substring(4, 1);
             url = Crawler.GetLinkedUrl(url, startUrl, httpHttps);
-            List<string> urlList = new List<string>() {url};
-            int counter = 0;
+            var urlList = new List<string>() {url};
+            var counter = 0;
 
-            Uri myUri = new Uri(startUrl);
-            string domain = myUri.Host;
+            var myUri = new Uri(startUrl);
+            var domain = myUri.Host;
 
             try
             {
@@ -29,22 +28,24 @@ namespace Webcrawler
                     Gui.WriteLine(startUrl);
                     Gui.WriteLine(url);
                     Console.WriteLine("We are at Link Nr. " +counter);
-                    //System.Threading.Thread.Sleep(300);
 
-                    string responseFromServer = Crawler.GetWebCode(url, startUrl, domain);
+                    var responseFromServer = Crawler.GetWebCode(url, startUrl, domain);
                     if (responseFromServer != "")
                     {
                         urlList = Crawler.GetUrlList(responseFromServer, startUrl, urlList, path, httpHttps);
-                        Console.WriteLine("Links exist " +urlList.Count);
-                        Gui.WriteFontGreen("Link Checked");
+                        Gui.WriteLine("Links exist " + urlList.Count);
+                        Gui.WriteGreen("Link Checked");
                     }
                     else
                     {
-                        Gui.WriteFontRed("ERROR");
+                        Gui.WriteRed("ERROR");
                     }
                 }
             }
-            catch (ArgumentOutOfRangeException) {}
+            catch (ArgumentOutOfRangeException e)
+            {
+                Gui.WriteRed(e.Message);
+            }
             Gui.Write("Please press any key to close this application.");
             Console.ReadKey();
         }
