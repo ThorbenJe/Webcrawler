@@ -1,6 +1,6 @@
 # Webcrawler
 
-## Programm descrition
+## Program descrition
 This Webcrawler is crawling through one site you entered. He is saving every url he will found in a .json.
 
 ## Requirements
@@ -10,7 +10,7 @@ This programm was checked with this setup:
 - 16Gb RAM
 
 ## Usage
-Type in the console whitch site you want to crawl through.
+Type in the console witch site you want to crawl through.
 
 ## Licens
 - Visual Studio Community 2015
